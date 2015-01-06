@@ -16,14 +16,14 @@ def makeup_file_slices(indexfile):
     dirname = os_path_dirname(indexfile)
     filename = metaData['whole'].get('name')
     md5sumOfWholeFile = metaData['whole'].get('md5sum')
-    fileslices = metaData['slices']
+    fileslices = metaData['parts']
     calMD5OfWholeFile = md5()
     buffersize = 1024 * 1024
     finished = 0
     # start to make up file slices
     filepath = os_path_join(dirname, filename)
     with open(filepath, 'wb') as writer:
-        for partfile in sorted(fileslices):
+        for partfile, correctMd5sum in fileslices:
             partfilepath = os_path_join(dirname, partfile)
             # if any partfile is not found
             # then exit immediately
@@ -33,7 +33,6 @@ def makeup_file_slices(indexfile):
                 exit(1)
             # calculate md5sum of each partfile
             # then compare with the correct md5sum
-            correctMd5sum = fileslices[partfile]
             calMD5= md5()
             with open(partfilepath, 'rb') as reader:
                 while True:

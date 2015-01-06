@@ -54,8 +54,8 @@ def slice_file(filepath, partsize):
                 # store necessary data
                 md5OfFileSlices = get_md5(partfile, md5OfFileSlices)
                 partfilename = os_path_basename(partfile)
-                metaDataOfSlice = {partfilename: md5sumOfSlice.hexdigest()}
-                metaData.setdefault('slices', {}).update(metaDataOfSlice)
+                metaDataOfSlice = (partfilename, md5sumOfSlice.hexdigest())
+                metaData.setdefault('parts', []).append(metaDataOfSlice)
     #
     # compare md5sum of the whole file with md5sum of file slices
     # if both are the same then succeed to complete
